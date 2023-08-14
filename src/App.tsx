@@ -3,8 +3,15 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import "./App.css";
 import Header from "./components/Header/Header";
+import { Emotions } from "./components/Emotions/Emotions";
+import { Emotion } from "./assets/types/Types";
+import { Summary } from "./components/Summary/Summary";
+import { TodayForm } from "./components/TodayForm/TodayForm";
 
 function App() {
+  const [emotion, setEmotion] = useState<Emotion>({ title: "", id: 0 });
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState<null | string>("");
   // Import the functions you need from the SDKs you need
   // TODO: Add SDKs for Firebase products that you want to use
   // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,7 +34,10 @@ function App() {
 
   return (
     <>
-      <Header h2>Choose todays emotion</Header>
+      <Header>Choose todays emotion</Header>
+      <Emotions setEmotion={setEmotion} />
+      <Summary emotion={emotion} />
+      <TodayForm setTitle={setTitle} setDescription={setDescription} />
     </>
   );
 }
