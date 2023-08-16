@@ -10,7 +10,7 @@ export const Emotions = ({ setEmotion }: Props) => {
     <div className="container mx-auto gap-10 columns-xs">
       {emotions_data.map((emotion) => {
         return (
-          <div>
+          <div key={emotion.id}>
             <button
               className="card w-full"
               onClick={() => {

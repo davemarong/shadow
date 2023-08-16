@@ -6,4 +6,5 @@ export const emotions_data = [
   { title: "Wrath", id: 4 },
   { title: "Greed", id: 5 },
   { title: "Disgust", id: 6 },
+  { title: "Ambition", id: 7 },
 ];
