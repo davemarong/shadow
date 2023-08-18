@@ -1,33 +1,66 @@
 import { useState } from "react";
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+import { auth, db } from "./components/Firebase/Firebase";
 import "./App.css";
 import Header from "./components/Header/Header";
+import { Emotions } from "./components/Emotions/Emotions";
+import { Diary, Emotion } from "./assets/types/Types";
+import { Summary } from "./components/Summary/Summary";
+import { TodayForm } from "./components/TodayForm/TodayForm";
+import { Calendar } from "./components/Calendar/Calendar";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { SignUp } from "./components/Login/SignUp";
+import { Button } from "./components/Buttons/Button";
+import { addDoc, collection } from "firebase/firestore";
+import { SignOut } from "./components/SignOut/SignOut";
 
 function App() {
-  // Import the functions you need from the SDKs you need
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
+  const [emotion, setEmotion] = useState<Emotion>({ title: "", id: 0 });
 
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyB8aiEOMGqvEFMdpK6pFKpey9b2xeN0TSI",
-    authDomain: "shadow-side-78127.firebaseapp.com",
-    projectId: "shadow-side-78127",
-    storageBucket: "shadow-side-78127.appspot.com",
-    messagingSenderId: "779042424487",
-    appId: "1:779042424487:web:fafe80a4a601cfa942fd82",
-    measurementId: "G-8RTES7EZTQ",
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState<null | string>("");
+  const [targetPerson, setTargetPerson] = useState<null | string>("");
+  const [diary, setDiary] = useState<Diary[]>([]);
+  const [user] = useAuthState(auth);
+
+  const handleSubmit = async () => {
+    const docRef = await addDoc(collection(db, `users/${user?.uid}/diary`), {
+      title: title,
+      description: description,
+      emotion: emotion.title,
+      date: new Date(),
+      target_person: targetPerson,
+    });
+    console.log(docRef);
+    // setDiary((prev) => [
+    //   ...prev,
+    //   {
+    //     title: title,
+    //     description: description,
+    //     emotion: emotion.title,
+    //     date: "new Date()",
+    //     target_person: targetPerson,
+    //   },
+    // ]);
   };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-
+  console.log(diary);
   return (
     <>
-      <Header h2>Choose todays emotion</Header>
+      {!user && <SignUp setDiary={setDiary} />}
+      {user && (
+        <>
+          <SignOut />
+          <Header>Choose todays emotion</Header>
+          <Emotions setEmotion={setEmotion} />
+          <Summary emotion={emotion} />
+          <TodayForm
+            setTitle={setTitle}
+            setDescription={setDescription}
+            setTargetPerson={setTargetPerson}
+          />
+          <Button func={handleSubmit}>Save</Button>
+          <Calendar diary={diary} />
+        </>
+      )}
     </>
   );
 }
