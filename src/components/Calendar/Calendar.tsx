@@ -1,6 +1,3 @@
-import React from "react";
-import { getFirestore } from "firebase/firestore";
-import app from "../Firebase/Firebase";
 import { Diary } from "../../assets/types/Types";
 
 interface Props {

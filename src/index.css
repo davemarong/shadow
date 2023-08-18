@@ -11,3 +11,11 @@
     margin: theme("margin.4");
   }
 }
+body {
+  background-color: rgb(44, 44, 44);
+  /* color: white; */
+}
+p,
+label {
+  color: aliceblue;
+}

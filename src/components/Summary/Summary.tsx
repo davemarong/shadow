@@ -1,4 +1,3 @@
-import React from "react";
 import { Emotion } from "../../assets/types/Types";
 
 interface Props {
