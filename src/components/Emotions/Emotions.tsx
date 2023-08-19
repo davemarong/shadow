@@ -10,9 +10,9 @@ export const Emotions = ({ setEmotion }: Props) => {
     <div className="container mx-auto gap-10 columns-xs">
       {emotions_data.map((emotion) => {
         return (
-          <div key={emotion.id}>
+          <div key={emotion.id} className="flex justify-center">
             <button
-              className="card w-full"
+              className="card md:w-full w-2/3 "
               onClick={() => {
                 setEmotion(emotion);
               }}
