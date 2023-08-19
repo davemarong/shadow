@@ -8,12 +8,12 @@ export const Calendar = ({ diary }: Props) => {
     <div>
       {diary?.map((item) => {
         return (
-          <div key={item.description} className="card">
-            <p>{item.title}</p>
-            <p>{item.target_person}</p>
-            <p>{item.date}</p>
-            <p>{item.emotion}</p>
-            <p>{item.description}</p>
+          <div key={item.description} className="card text-black">
+            <p className="text-black">{item.title}</p>
+            <p className="text-black">{item.target_person}</p>
+            <p className="text-black">{item.date}</p>
+            <p className="text-black">{item.emotion}</p>
+            <p className="text-black">{item.description}</p>
           </div>
         );
       })}
