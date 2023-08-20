@@ -1,27 +1,49 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "./components/Firebase/Firebase";
 import "./App.css";
-import Header from "./components/Header/Header";
-import { Emotions } from "./components/Emotions/Emotions";
-import { Diary, Emotion } from "./assets/types/Types";
-import { Summary } from "./components/Summary/Summary";
-import { TodayForm } from "./components/TodayForm/TodayForm";
-import { Calendar } from "./components/Calendar/Calendar";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./routes/Home";
+import { Outlet } from "react-router-dom";
+import { Emotion } from "./routes/DiaryEntry/Emotion";
+import { Form } from "./routes/DiaryEntry/Form";
+import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { SignUp } from "./components/Login/SignUp";
-import { Button } from "./components/Buttons/Button";
-import { addDoc, collection } from "firebase/firestore";
-import { SignOut } from "./components/SignOut/SignOut";
+
+import { Diary, Emotion as EmotionType } from "./assets/types/Types";
+import { Calendar } from "./routes/DiaryEntry/Calendar";
 
 function App() {
-  const [emotion, setEmotion] = useState<Emotion>({ title: "", id: 0 });
+  const [emotion, setEmotion] = useState<EmotionType>({ title: "", id: 0 });
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState<null | string>("");
   const [targetPerson, setTargetPerson] = useState<null | string>("");
   const [diary, setDiary] = useState<Diary[]>([]);
+
   const [user] = useAuthState(auth);
 
+  useEffect(() => {
+    const fetchDiary = async () => {
+      if (user) {
+        const querySnapshot = await getDocs(
+          collection(db, "users", user.uid, "diary")
+        );
+        const diaries = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          const date = new Date();
+          return {
+            title: data.title,
+            description: data.description,
+            emotion: data.emotion,
+            target_person: data.person,
+            date: date.toDateString(),
+          };
+        });
+        setDiary(diaries);
+      }
+    };
+    fetchDiary();
+  }, [user]);
   const handleSubmit = async () => {
     const docRef = await addDoc(collection(db, `users/${user?.uid}/diary`), {
       title: title,
@@ -31,36 +53,44 @@ function App() {
       target_person: targetPerson,
     });
     console.log(docRef);
-    // setDiary((prev) => [
-    //   ...prev,
-    //   {
-    //     title: title,
-    //     description: description,
-    //     emotion: emotion.title,
-    //     date: "new Date()",
-    //     target_person: targetPerson,
-    //   },
-    // ]);
   };
-  console.log(diary);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Home />,
+      children: [
+        {
+          path: "Diary_Entry",
+          element: <Outlet />,
+          children: [
+            {
+              path: "Emotion",
+              element: <Emotion setEmotion={setEmotion} />,
+            },
+            {
+              path: "Form",
+              element: (
+                <Form
+                  setTitle={setTitle}
+                  setDescription={setDescription}
+                  setTargetPerson={setTargetPerson}
+                  handleSubmit={handleSubmit}
+                  emotion={emotion}
+                />
+              ),
+            },
+          ],
+        },
+        {
+          path: "Calendar",
+          element: <Calendar diary={diary} />,
+        },
+      ],
+    },
+  ]);
   return (
     <>
-      {!user && <SignUp setDiary={setDiary} />}
-      {user && (
-        <>
-          <SignOut />
-          <Header>Choose todays emotion</Header>
-          <Emotions setEmotion={setEmotion} />
-          <Summary emotion={emotion} />
-          <TodayForm
-            setTitle={setTitle}
-            setDescription={setDescription}
-            setTargetPerson={setTargetPerson}
-          />
-          <Button func={handleSubmit}>Save</Button>
-          <Calendar diary={diary} />
-        </>
-      )}
+      <RouterProvider router={router} />
     </>
   );
 }
