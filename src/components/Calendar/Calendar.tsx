@@ -8,7 +8,7 @@ export const Calendar = ({ diary }: Props) => {
     <div>
       {diary?.map((item) => {
         return (
-          <div key={item.description} className="card text-black">
+          <div key={item.title} className="card text-black">
             <p className="text-black">{item.title}</p>
             <p className="text-black">{item.target_person}</p>
             <p className="text-black">{item.date}</p>

@@ -9,12 +9,12 @@ interface Props {
 export const Emotions = ({ setEmotion }: Props) => {
   const navigate = useNavigate();
   return (
-    <div className="container mx-auto gap-10 columns-xs">
+    <div className="container mx-auto gap-2 columns-2 sm:columns-3 md:columns-4">
       {emotions_data.map((emotion) => {
         return (
           <div key={emotion.id} className="flex justify-center">
             <button
-              className="card md:w-full w-2/3 "
+              className="card md:w-full w-96"
               onClick={() => {
                 setEmotion(emotion);
                 navigate("/Diary_Entry/Form");

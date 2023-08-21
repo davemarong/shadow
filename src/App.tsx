@@ -11,6 +11,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 
 import { Diary, Emotion as EmotionType } from "./assets/types/Types";
 import { Calendar } from "./routes/DiaryEntry/Calendar";
+import { GlobalLayout } from "./routes/DiaryEntry/GlobalLayout";
 
 function App() {
   const [emotion, setEmotion] = useState<EmotionType>({ title: "", id: 0 });
@@ -57,8 +58,13 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home />,
+      element: <GlobalLayout />,
       children: [
+        // },
+        {
+          path: "/",
+          element: <Home />,
+        },
         {
           path: "Diary_Entry",
           element: <Outlet />,

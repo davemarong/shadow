@@ -1,7 +1,5 @@
-import React from "react";
 import { TodayForm } from "../../components/TodayForm/TodayForm";
 import { Button } from "../../components/Buttons/Button";
-import Header from "../../components/Header/Header";
 import { Emotion } from "../../assets/types/Types";
 
 interface Props {

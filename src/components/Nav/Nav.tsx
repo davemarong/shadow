@@ -1,4 +1,3 @@
-import React from "react";
 import { nav_items } from "./NavItems";
 import { Link } from "react-router-dom";
 

@@ -4,15 +4,19 @@
 
 @layer components {
   .card {
-    background-color: theme("colors.white");
+    background-color: theme("colors.darkLight");
     border-radius: theme("borderRadius.lg");
     padding: theme("spacing.6");
     box-shadow: theme("boxShadow.xl");
     margin: theme("margin.4");
+    color: aliceblue;
+  }
+  .card:hover {
+    background-color: #363636;
   }
 }
 body {
-  background-color: rgb(44, 44, 44);
+  background-color: theme("colors.dark");
   /* color: white; */
 }
 p,
