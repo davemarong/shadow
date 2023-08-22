@@ -1,30 +1,18 @@
 import { TodayForm } from "../../components/TodayForm/TodayForm";
-import { Button } from "../../components/Buttons/Button";
 import { Emotion } from "../../assets/types/Types";
+import { Back } from "../../components/Buttons/Back";
 
 interface Props {
-  setTitle: (value: string) => void;
-  setDescription: (value: string) => void;
-  setTargetPerson: (value: string) => void;
-  handleSubmit: () => void;
   emotion: Emotion;
 }
-export const Form = ({
-  setTitle,
-  setDescription,
-  setTargetPerson,
-  handleSubmit,
-  emotion,
-}: Props) => {
+export const Form = ({ emotion }: Props) => {
   return (
     <>
-      <p className="text-3xl text-center">{emotion.title}</p>
-      <TodayForm
-        setTitle={setTitle}
-        setDescription={setDescription}
-        setTargetPerson={setTargetPerson}
-      />
-      <Button func={handleSubmit}>Save</Button>
+      <Back />
+      <p className="text-3xl text-center underline underline-offset-8 decoration-2 decoration-indigo-700 mb-8">
+        {emotion.title}
+      </p>
+      <TodayForm emotion={emotion} />
     </>
   );
 };

@@ -8,9 +8,14 @@ const manifestForPlugIn = {
   registerType: "prompt",
   includeAssests: ["favicon.ico", "apple-touc-icon.png", "masked-icon.svg"],
   manifest: {
-    name: "React-vite-app",
-    short_name: "react-vite-app",
-    description: "I am a simple vite app",
+    name: "Shadow integration",
+    short_name: "Shadow",
+    start_url: "/",
+    display: "standalone",
+    background_color: "#2c2c2c",
+    lang: "en",
+    scope: "/",
+    description: "A app for integrating your shadow",
     icons: [
       {
         src: "/android-chrome-192x192.png",
@@ -37,11 +42,7 @@ const manifestForPlugIn = {
         purpose: "any maskable",
       },
     ],
-    theme_color: "#171717",
-    background_color: "#f0e7db",
-    display: "standalone",
-    scope: "/",
-    start_url: "/",
+    theme_color: "#2c2c2c",
     orientation: "portrait",
   },
 };

@@ -1,12 +1,12 @@
 {
-  "name": "React-vite-app",
-  "short_name": "react-vite-app",
+  "name": "Shadow integration",
+  "short_name": "Shadow",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#2c2c2c",
   "lang": "en",
   "scope": "/",
-  "description": "I am a simple vite app",
+  "description": "A app for integrating your shadow",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -33,6 +33,6 @@
       "purpose": "any maskable"
     }
   ],
-  "theme_color": "#171717",
+  "theme_color": "#2c2c2c",
   "orientation": "portrait"
 }

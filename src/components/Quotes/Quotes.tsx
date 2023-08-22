@@ -1,9 +1,18 @@
-import React from "react";
 import { carl_jung_quotes } from "../../assets/constants/Quotes";
 
 export const Quotes = () => {
-  const randomNumber = Math.floor(Math.random() * carl_jung_quotes.length);
-  console.log(randomNumber);
+  function generateNumberFromDate() {
+    const currentDate = new Date();
+    const dayOfMonth = currentDate.getDate();
+
+    // Calculate the corresponding number in the range 1-17
+    const numberInRange = ((dayOfMonth - 0) % carl_jung_quotes.length) + 1;
+
+    return numberInRange;
+  }
+
+  const randomNumber = generateNumberFromDate();
+
   return (
     <div className="flex justify-center">
       <div className="card m-4 p-3 max-w-2xl">
@@ -26,7 +35,7 @@ export const Quotes = () => {
           <figcaption className="flex items-center justify-center mt-6 space-x-3">
             <img
               className="w-10 h-10 rounded-full"
-              src="/src/assets/images/carl-jung.png"
+              src="/carl-jung.png"
               alt="profile picture"
             />
             <div className="flex items-center divide-x-2 divide-gray-500 dark:divide-gray-700">

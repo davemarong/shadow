@@ -12,7 +12,7 @@ export const Emotions = ({ setEmotion }: Props) => {
     <div className="container mx-auto gap-2 columns-2 sm:columns-3 md:columns-4">
       {emotions_data.map((emotion) => {
         return (
-          <div key={emotion.id} className="flex justify-center">
+          <div key={emotion.id} className="flex items-center justify-center">
             <button
               className="card md:w-full w-96"
               onClick={() => {
@@ -20,6 +20,7 @@ export const Emotions = ({ setEmotion }: Props) => {
                 navigate("/Diary_Entry/Form");
               }}
             >
+              <img className="w-12 mx-auto pb-2" src={emotion.img} />
               {emotion.title}
             </button>
           </div>

@@ -6,7 +6,7 @@ import Home from "./routes/Home";
 import { Outlet } from "react-router-dom";
 import { Emotion } from "./routes/DiaryEntry/Emotion";
 import { Form } from "./routes/DiaryEntry/Form";
-import { addDoc, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { Diary, Emotion as EmotionType } from "./assets/types/Types";
@@ -16,11 +16,7 @@ import { GlobalLayout } from "./routes/DiaryEntry/GlobalLayout";
 function App() {
   const [emotion, setEmotion] = useState<EmotionType>({ title: "", id: 0 });
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState<null | string>("");
-  const [targetPerson, setTargetPerson] = useState<null | string>("");
   const [diary, setDiary] = useState<Diary[]>([]);
-
   const [user] = useAuthState(auth);
 
   useEffect(() => {
@@ -45,22 +41,12 @@ function App() {
     };
     fetchDiary();
   }, [user]);
-  const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, `users/${user?.uid}/diary`), {
-      title: title,
-      description: description,
-      emotion: emotion.title,
-      date: new Date(),
-      target_person: targetPerson,
-    });
-    console.log(docRef);
-  };
+
   const router = createBrowserRouter([
     {
       path: "/",
       element: <GlobalLayout />,
       children: [
-        // },
         {
           path: "/",
           element: <Home />,
@@ -75,15 +61,7 @@ function App() {
             },
             {
               path: "Form",
-              element: (
-                <Form
-                  setTitle={setTitle}
-                  setDescription={setDescription}
-                  setTargetPerson={setTargetPerson}
-                  handleSubmit={handleSubmit}
-                  emotion={emotion}
-                />
-              ),
+              element: <Form emotion={emotion} />,
             },
           ],
         },
