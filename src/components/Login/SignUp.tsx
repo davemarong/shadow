@@ -1,13 +1,9 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "../Firebase/Firebase";
-import { collection, getDocs, getDoc, setDoc, doc } from "firebase/firestore";
+import { getDoc, setDoc, doc } from "firebase/firestore";
 import { Button } from "../Buttons/Button";
-import { Diary } from "../../assets/types/Types";
 
-interface Props {
-  setDiary: (diary: Diary[]) => void;
-}
-export const SignUp = ({ setDiary }: Props) => {
+export const SignUp = () => {
   const handleSignIn = async () => {
     const provider = new GoogleAuthProvider();
 
@@ -30,21 +26,21 @@ export const SignUp = ({ setDiary }: Props) => {
     } else {
       console.log(docSnap.data());
 
-      const querySnapshot = await getDocs(
-        collection(db, "users", user.uid, "diary")
-      );
-      const diaries = querySnapshot.docs.map((doc) => {
-        const data = doc.data();
-        return {
-          title: data.title,
-          description: data.description,
-          emotion: data.emotion,
-          target_person: data.person,
-          date: "",
-        };
-      });
-      console.log(diaries);
-      setDiary(diaries);
+      // const querySnapshot = await getDocs(
+      //   collection(db, "users", user.uid, "diary")
+      // );
+      // const diaries = querySnapshot.docs.map((doc) => {
+      //   const data = doc.data();
+      //   return {
+      //     title: data.title,
+      //     description: data.description,
+      //     emotion: data.emotion,
+      //     target_person: data.person,
+      //     date: "",
+      //   };
+      // });
+      // console.log(diaries);
+      // setDiary(diaries);
     }
 
     console.log({ user });

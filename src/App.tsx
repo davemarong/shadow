@@ -1,66 +1,92 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { auth, db } from "./components/Firebase/Firebase";
 import "./App.css";
-import Header from "./components/Header/Header";
-import { Emotions } from "./components/Emotions/Emotions";
-import { Diary, Emotion } from "./assets/types/Types";
-import { Summary } from "./components/Summary/Summary";
-import { TodayForm } from "./components/TodayForm/TodayForm";
-import { Calendar } from "./components/Calendar/Calendar";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Home from "./routes/Home";
+import { Outlet } from "react-router-dom";
+import { Emotion } from "./routes/DiaryEntry/Emotion";
+import { Form } from "./routes/DiaryEntry/Form";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { SignUp } from "./components/Login/SignUp";
-import { Button } from "./components/Buttons/Button";
-import { addDoc, collection } from "firebase/firestore";
-import { SignOut } from "./components/SignOut/SignOut";
+
+import { Diary, Emotion as EmotionType } from "./assets/types/Types";
+import { Calendar } from "./routes/Diary/Calendar";
+import { GlobalLayout } from "./routes/DiaryEntry/GlobalLayout";
+import { Diary_Details } from "./routes/Diary/Diary_Details";
 
 function App() {
-  const [emotion, setEmotion] = useState<Emotion>({ title: "", id: 0 });
+  const [emotion, setEmotion] = useState<EmotionType>({ title: "", id: 0 });
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState<null | string>("");
-  const [targetPerson, setTargetPerson] = useState<null | string>("");
   const [diary, setDiary] = useState<Diary[]>([]);
+
   const [user] = useAuthState(auth);
 
-  const handleSubmit = async () => {
-    const docRef = await addDoc(collection(db, `users/${user?.uid}/diary`), {
-      title: title,
-      description: description,
-      emotion: emotion.title,
-      date: new Date(),
-      target_person: targetPerson,
-    });
-    console.log(docRef);
-    // setDiary((prev) => [
-    //   ...prev,
-    //   {
-    //     title: title,
-    //     description: description,
-    //     emotion: emotion.title,
-    //     date: "new Date()",
-    //     target_person: targetPerson,
-    //   },
-    // ]);
-  };
-  console.log(diary);
+  useEffect(() => {
+    const fetchDiary = async () => {
+      if (user) {
+        const querySnapshot = await getDocs(
+          query(
+            collection(db, "users", user.uid, "diary"),
+            orderBy("date", "desc")
+          )
+        );
+
+        const diaries = querySnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            title: data.title,
+            description: data.description,
+            emotion: data.emotion,
+            target_person: data.target_person,
+            date: new Date(data.date.seconds * 1000).toDateString(),
+            doc_id: doc.id,
+          };
+        });
+        console.log(diaries);
+
+        setDiary(diaries);
+      }
+    };
+    fetchDiary();
+  }, [user]);
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <GlobalLayout />,
+      children: [
+        {
+          path: "/",
+          element: <Home />,
+        },
+        {
+          path: "Diary_Entry",
+          element: <Outlet />,
+          children: [
+            {
+              path: "Emotion",
+              element: <Emotion setEmotion={setEmotion} />,
+            },
+            {
+              path: "Form",
+              element: <Form emotion={emotion} />,
+            },
+          ],
+        },
+        {
+          path: "Calendar",
+          element: <Calendar diary={diary} />,
+        },
+        {
+          path: "Calendar/:diaryId",
+          element: <Diary_Details diary={diary} />,
+        },
+      ],
+    },
+  ]);
   return (
     <>
-      {!user && <SignUp setDiary={setDiary} />}
-      {user && (
-        <>
-          <SignOut />
-          <Header>Choose todays emotion</Header>
-          <Emotions setEmotion={setEmotion} />
-          <Summary emotion={emotion} />
-          <TodayForm
-            setTitle={setTitle}
-            setDescription={setDescription}
-            setTargetPerson={setTargetPerson}
-          />
-          <Button func={handleSubmit}>Save</Button>
-          <Calendar diary={diary} />
-        </>
-      )}
+      <RouterProvider router={router} />
     </>
   );
 }
