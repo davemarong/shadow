@@ -1,14 +1,21 @@
 import { Emoji_Enum } from "../../assets/constants/Emotions";
 import { Diary } from "../../assets/types/Types";
+import { useNavigate } from "react-router-dom";
+
 interface Props {
   diary: Diary[];
 }
 export const Calendar = ({ diary }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex flex-col items-center m-4">
       {diary?.map((item) => {
         return (
           <div
+            onClick={() => {
+              navigate(`/Calendar/${item.doc_id}`);
+            }}
             key={item.title}
             className="card m-4 p-3 w-full max-w-2xl gap-4 flex"
           >

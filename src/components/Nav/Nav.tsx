@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Nav = () => {
   return (
-    <ul>
+    <ul className="flex justify-center">
       {nav_items.map((item) => {
         return (
           <Link key={item.id} to={item.path}>

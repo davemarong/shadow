@@ -1,6 +1,6 @@
 import Anger from "/Anger.png";
 import Pride from "/Pride.png";
-import Greed from "/Greedb2.png";
+import Greed from "/Greed.png";
 import Envy from "/Envy.png";
 import Lust from "/Lust.png";
 import Disgust from "/Disgust.png";

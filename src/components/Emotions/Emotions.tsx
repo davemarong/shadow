@@ -9,7 +9,7 @@ interface Props {
 export const Emotions = ({ setEmotion }: Props) => {
   const navigate = useNavigate();
   return (
-    <div className="container mx-auto gap-2 columns-2 sm:columns-3 md:columns-4">
+    <div className="container mt-16 mx-auto gap-2 columns-2 sm:columns-3 md:columns-4">
       {emotions_data.map((emotion) => {
         return (
           <div key={emotion.id} className="flex items-center justify-center">

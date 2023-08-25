@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { Button } from "../Buttons/Button";
 import { Emotion } from "../../assets/types/Types";
-import { addDoc, collection } from "firebase/firestore";
-import { db, auth } from "../Firebase/Firebase";
+import { addDoc, serverTimestamp, collection } from "firebase/firestore";
+import { db, auth, analytics } from "../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { logEvent } from "firebase/analytics";
 
 interface Props {
   emotion: Emotion;
@@ -29,8 +30,12 @@ export const TodayForm = ({ emotion }: Props) => {
       title: title,
       description: description,
       emotion: emotion.title,
-      date: new Date(),
+      createdAt: serverTimestamp(),
       target_person: targetPerson,
+    });
+    logEvent(analytics, "diaryEntry_added", {
+      user: user?.displayName,
+      emotion: emotion.title,
     });
     setLoading(false);
     console.log(docRef);
