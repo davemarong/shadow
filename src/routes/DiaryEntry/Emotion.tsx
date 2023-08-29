@@ -8,7 +8,7 @@ interface Props {
 export const Emotion = ({ setEmotion }: Props) => {
   return (
     <>
-      <Header>Choose todays emotion</Header>
+      <Header>Which emotion did you notice in yourself today?</Header>
       <Emotions setEmotion={setEmotion} />
     </>
   );

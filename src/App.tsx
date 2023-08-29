@@ -6,14 +6,7 @@ import Home from "./routes/Home";
 import { Outlet } from "react-router-dom";
 import { Emotion } from "./routes/DiaryEntry/Emotion";
 import { Form } from "./routes/DiaryEntry/Form";
-import {
-  collection,
-  getDocs,
-  orderBy,
-  query,
-  onSnapshot,
-  doc,
-} from "firebase/firestore";
+import { collection, orderBy, query, onSnapshot } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { Diary, Emotion as EmotionType } from "./assets/types/Types";
@@ -37,7 +30,7 @@ function App() {
 
       const threshold = Date.now() - 60 * 60 * 1000; // Items added within the last hour are considered new
 
-      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      onSnapshot(q, (querySnapshot) => {
         const diaries = querySnapshot.docs.map((doc) => {
           const data = doc.data();
 

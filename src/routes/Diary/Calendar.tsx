@@ -1,18 +1,27 @@
 import { Diary } from "../../assets/types/Types";
-import { AddEntryCTA } from "../../components/AddEntryCTA/AddEntryCTA";
+import { AddFirstEntry } from "../../components/AddFirstEntry/AddFirstEntry";
 import { Calendar as CalenderComp } from "../../components/Calendar/Calendar";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   diary: Diary[];
 }
 export const Calendar = ({ diary }: Props) => {
+  const navigate = useNavigate();
+
   return (
-    <div>
-      {diary.length === 0 && <AddEntryCTA />}
-      <CalenderComp diary={diary} />- Her må du bruke den live oppdaterings
-      query slik at det automatisk dukker opp nye entries. - Når er har trykt på
-      "save" på add entry pagen, så må det komme opp en snackbar/link direkt til
-      calendar pagen, slik at bruekren kan se at noe har sjedd
-    </div>
+    <>
+      {diary.length === 0 && <AddFirstEntry />}
+      <div className="flex justify-center m-4">
+        <button
+          onClick={() => {
+            navigate("/Diary_Entry/Emotion");
+          }}
+        >
+          <img className="w-10" src="/add.svg" />
+        </button>
+      </div>
+      <CalenderComp diary={diary} />
+    </>
   );
 };
