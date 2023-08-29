@@ -11,12 +11,12 @@ function Home() {
   return (
     <>
       {!user && <SignUp />}
-      {user && (
-        <>
-          <Quotes />
-          <Outlet />
-        </>
-      )}
+      {/* {user && ( */}
+      <>
+        <Quotes />
+        <Outlet />
+      </>
+      {/* )} */}
     </>
   );
 }

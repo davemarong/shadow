@@ -5,6 +5,7 @@ import { addDoc, serverTimestamp, collection } from "firebase/firestore";
 import { db, auth, analytics } from "../Firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { logEvent } from "firebase/analytics";
+import { SignUp } from "../Login/SignUp";
 
 interface Props {
   emotion: Emotion;
@@ -14,6 +15,7 @@ export const TodayForm = ({ emotion }: Props) => {
   const [description, setDescription] = useState<null | string>("");
   const [targetPerson, setTargetPerson] = useState<null | string>("");
   const [loading, setLoading] = useState(false);
+  const [signInMessage, setSignInMessage] = useState(false);
   const [user] = useAuthState(auth);
   const handleDescription = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDescription(e.target.value);
@@ -25,6 +27,10 @@ export const TodayForm = ({ emotion }: Props) => {
     setTargetPerson(e.target.value);
   };
   const handleSubmit = async () => {
+    if (!user) {
+      setSignInMessage(true);
+      return;
+    }
     setLoading(true);
     const docRef = await addDoc(collection(db, `users/${user?.uid}/diary`), {
       title: title,
@@ -40,6 +46,17 @@ export const TodayForm = ({ emotion }: Props) => {
     setLoading(false);
     console.log(docRef);
   };
+  if (!user && signInMessage) {
+    return (
+      <>
+        <p className="text-3xl text-center">
+          Log in to add your first diary entry
+        </p>
+        ;
+        <SignUp />
+      </>
+    );
+  }
   if (loading) {
     return <img className="mx-auto" src="/spinner.svg" />;
   }
