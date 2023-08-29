@@ -26,4 +26,5 @@ export type Diary = {
   emotion: Emotions;
   target_person: string;
   doc_id: string;
+  newly_added: boolean;
 };

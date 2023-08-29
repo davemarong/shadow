@@ -17,7 +17,9 @@ export const Calendar = ({ diary }: Props) => {
               navigate(`/Calendar/${item.doc_id}`);
             }}
             key={item.title}
-            className="card m-4 p-3 w-full max-w-2xl gap-4 flex"
+            className={`card m-4 ${
+              item.newly_added ? "border border-lime-400" : ""
+            } p-3 w-full max-w-2xl gap-4 flex`}
           >
             <img className="w-16" src={Emoji_Enum[item.emotion]} />
             <div className="flex flex-col justify-center">
