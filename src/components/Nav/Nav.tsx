@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export const Nav = () => {
   return (
-    <ul className="flex justify-center">
+    <ul className="flex justify-center items-center gap-5">
       {nav_items.map((item) => {
         return (
           <Link key={item.id} to={item.path}>
@@ -13,6 +13,9 @@ export const Nav = () => {
           </Link>
         );
       })}
+      <Link to="/account">
+        <img className="w-10" src="/account.svg" />
+      </Link>
     </ul>
   );
 };
