@@ -1,4 +1,3 @@
-import React from "react";
 import { UserCard } from "../components/UserCard/UserCard";
 import { SignOut } from "../components/SignOut/SignOut";
 import { Diary } from "../assets/types/Types";
