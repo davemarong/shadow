@@ -15,7 +15,7 @@ export const Quotes = () => {
 
   return (
     <div className="flex justify-center">
-      <div className="card m-4 p-3 max-w-2xl">
+      <div className="card m-4 p-3 w-full max-w-2xl">
         <p className="text-center text-sm">Quote of the day</p>
         <figure className="max-w-screen-md mx-auto text-center">
           <svg

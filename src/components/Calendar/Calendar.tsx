@@ -17,16 +17,21 @@ export const Calendar = ({ diary }: Props) => {
               navigate(`/Calendar/${item.doc_id}`);
             }}
             key={item.title}
-            className="card m-4 p-3 w-full max-w-2xl gap-4 flex"
+            className={`card m-4 ${
+              item.newly_added ? "border border-lime-400" : ""
+            } p-3 w-full max-w-2xl gap-4 flex`}
           >
-            <img className="w-16" src={Emoji_Enum[item.emotion]} />
-            <div className="flex flex-col justify-center">
-              <div className="flex items-center gap-4">
-                <p className="text-2xl">{item.emotion}</p>
-                <p className="text-xs">{item.date}</p>
+            <div className={`  p-3 w-full max-w-2xl gap-4 flex`}>
+              <img className="w-16" src={Emoji_Enum[item.emotion]} />
+              <div className="flex flex-col justify-center">
+                <div className="flex items-center gap-4">
+                  <p className="text-2xl">{item.emotion}</p>
+                  <p className="text-xs">{item.date}</p>
+                </div>
+                <p className="text-md width-full">{item.title}</p>
               </div>
-              <p className="text-md width-full">{item.title}</p>
             </div>
+            {item.newly_added && <p className="text-xs">NEW!</p>}
           </div>
         );
       })}

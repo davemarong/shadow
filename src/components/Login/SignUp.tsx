@@ -1,8 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, db } from "../Firebase/Firebase";
 import { getDoc, setDoc, doc } from "firebase/firestore";
-import { Button } from "../Buttons/Button";
-
+import google from "/google.svg";
 export const SignUp = () => {
   const handleSignIn = async () => {
     const provider = new GoogleAuthProvider();
@@ -46,8 +45,14 @@ export const SignUp = () => {
     console.log({ user });
   };
   return (
-    <div>
-      <Button func={handleSignIn}>Sign In with Google</Button>
+    <div className="flex justify-center">
+      <button
+        className="border flex items-center	gap-3 border-indigo-500 bg-indigo-500 text-white rounded-md px-4 py-2 m-2 transition duration-500 ease select-none hover:bg-indigo-600 focus:outline-none focus:shadow-outline"
+        onClick={handleSignIn}
+      >
+        <p>Sign In with Google</p>
+        <img className="w-10" src={google} />
+      </button>
     </div>
   );
 };

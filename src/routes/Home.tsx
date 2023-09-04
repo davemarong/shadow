@@ -4,6 +4,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { SignUp } from "../components/Login/SignUp";
 import { Outlet } from "react-router-dom";
 import { Quotes } from "../components/Quotes/Quotes";
+import { AddEntryCTA } from "../components/AddEntryCTA/AddEntryCTA";
 
 function Home() {
   const [user] = useAuthState(auth);
@@ -11,12 +12,13 @@ function Home() {
   return (
     <>
       {!user && <SignUp />}
-      {user && (
-        <>
-          <Quotes />
-          <Outlet />
-        </>
-      )}
+      {/* {user && ( */}
+      <>
+        <Quotes />
+        <AddEntryCTA />
+        <Outlet />
+      </>
+      {/* )} */}
     </>
   );
 }

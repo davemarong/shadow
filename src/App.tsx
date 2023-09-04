@@ -6,7 +6,7 @@ import Home from "./routes/Home";
 import { Outlet } from "react-router-dom";
 import { Emotion } from "./routes/DiaryEntry/Emotion";
 import { Form } from "./routes/DiaryEntry/Form";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
+import { collection, orderBy, query, onSnapshot } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import { Diary, Emotion as EmotionType } from "./assets/types/Types";
@@ -22,32 +22,43 @@ function App() {
   const [user] = useAuthState(auth);
 
   useEffect(() => {
-    const fetchDiary = async () => {
-      if (user) {
-        const querySnapshot = await getDocs(
-          query(
-            collection(db, "users", user.uid, "diary"),
-            orderBy("date", "desc")
-          )
-        );
+    if (user) {
+      const q = query(
+        collection(db, "users", user.uid, "diary"),
+        orderBy("createdAt", "desc")
+      );
 
+      const threshold = Date.now() - 60 * 60 * 1000; // Items added within the last hour are considered new
+
+      onSnapshot(q, (querySnapshot) => {
         const diaries = querySnapshot.docs.map((doc) => {
           const data = doc.data();
-          return {
-            title: data.title,
-            description: data.description,
-            emotion: data.emotion,
-            target_person: data.target_person,
-            date: new Date(data.date.seconds * 1000).toDateString(),
-            doc_id: doc.id,
-          };
-        });
-        console.log(diaries);
 
+          if (data.createdAt.seconds * 1000 > threshold) {
+            return {
+              title: data.title,
+              description: data.description,
+              emotion: data.emotion,
+              target_person: data.target_person,
+              date: new Date(data?.createdAt.seconds * 1000).toDateString(),
+              doc_id: doc.id,
+              newly_added: true,
+            };
+          } else {
+            return {
+              title: data.title,
+              description: data.description,
+              emotion: data.emotion,
+              target_person: data.target_person,
+              date: new Date(data?.createdAt.seconds * 1000).toDateString(),
+              doc_id: doc.id,
+              newly_added: false,
+            };
+          }
+        });
         setDiary(diaries);
-      }
-    };
-    fetchDiary();
+      });
+    }
   }, [user]);
 
   const router = createBrowserRouter([
