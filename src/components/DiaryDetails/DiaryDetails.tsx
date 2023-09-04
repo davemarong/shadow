@@ -1,4 +1,3 @@
-import React from "react";
 import { Emoji_Enum } from "../../assets/constants/Emotions";
 import { Diary } from "../../assets/types/Types";
 

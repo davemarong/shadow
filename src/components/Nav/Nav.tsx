@@ -1,9 +1,11 @@
+import { useAuthState } from "react-firebase-hooks/auth";
 import { nav_items } from "./NavItems";
 import { Link } from "react-router-dom";
-
+import { auth } from "../Firebase/Firebase";
 export const Nav = () => {
+  const [user] = useAuthState(auth);
   return (
-    <ul className="flex justify-center">
+    <ul className="flex justify-center items-center gap-5">
       {nav_items.map((item) => {
         return (
           <Link key={item.id} to={item.path}>
@@ -13,6 +15,11 @@ export const Nav = () => {
           </Link>
         );
       })}
+      {user && (
+        <Link to="/account">
+          <img className="w-10" src="/account.svg" />
+        </Link>
+      )}
     </ul>
   );
 };

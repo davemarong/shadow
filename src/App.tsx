@@ -13,6 +13,7 @@ import { Diary, Emotion as EmotionType } from "./assets/types/Types";
 import { Calendar } from "./routes/Diary/Calendar";
 import { GlobalLayout } from "./routes/DiaryEntry/GlobalLayout";
 import { Diary_Details } from "./routes/Diary/Diary_Details";
+import { Account } from "./routes/Account";
 
 function App() {
   const [emotion, setEmotion] = useState<EmotionType>({ title: "", id: 0 });
@@ -91,6 +92,10 @@ function App() {
         {
           path: "Calendar/:diaryId",
           element: <Diary_Details diary={diary} />,
+        },
+        {
+          path: "Account",
+          element: <Account diary={diary} />,
         },
       ],
     },
