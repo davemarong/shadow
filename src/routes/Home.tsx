@@ -5,6 +5,7 @@ import { SignUp } from "../components/Login/SignUp";
 import { Outlet } from "react-router-dom";
 import { Quotes } from "../components/Quotes/Quotes";
 import { AddEntryCTA } from "../components/AddEntryCTA/AddEntryCTA";
+import { Formio } from "../components/Formio/Formio";
 
 function Home() {
   const [user] = useAuthState(auth);
@@ -17,6 +18,7 @@ function Home() {
         <Quotes />
         <AddEntryCTA />
         <Outlet />
+        <Formio/>
       </>
       {/* )} */}
     </>
